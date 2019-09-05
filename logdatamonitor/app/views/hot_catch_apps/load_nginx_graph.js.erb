@@ -1,0 +1,86 @@
+var chart;
+
+<% if @error_date %>
+  alert("Неверный формат даты")
+<% elsif @graph_data_x.present? && @graph_data_x.count > 0 %>
+  $("#nginx_graph_form_from").val("<%= @begin_date %>")
+  $("#nginx_graph_form_to").val("<%= @end_date %>")
+  $("#limit-date").text("(<%= @min_date %> - <%= @max_date %>)")
+
+  $("#nginx_graph_form_ip").html("")
+  <% for ip in @ips do %>
+    $("#nginx_graph_form_ip").append("<option <%= 'selected' if @cur_ip == ip %> value='<%= ip %>'><%= ip %></option>")
+  <% end %>
+  $("#nginx_graph_form_visitor").html("")
+  <% for visitor in @visitors do %>
+    $("#nginx_graph_form_visitor").append("<option <%= 'selected' if @cur_visitor == visitor[1] %> value='<%= visitor[1] %>'><%= visitor[0] %></option>")
+  <% end %>
+
+  <% @graph_data_x.unshift('x'); @graph_data_y.unshift('Nginx') %>
+  chart = c3.generate({
+    point: {
+      r: 5
+    },
+    bindto: '#nginx-chart',
+    data: {
+      x: 'x',
+      xFormat: '<%== @parse_c3_date_format %>',
+      columns: [<%== @graph_data_x %>, <%== @graph_data_y %>],
+      onclick: function(d, element) {
+        var find_date;
+        $("#modal-nginx-logs").modal('show');
+        find_date = moment(d.x).lang("en").format('<%== @moment_format %>');
+        return $.ajax({
+          url: '<%= @nginx_logs_path %>',
+          data: {
+            "nginx-date": find_date
+          }
+        }).done(function(data) {
+          var i, j, len, nginx_log, ref, results;
+          if (data.status) {
+            $("#modal-nginx-logs-body").html("");
+            ref = data.nginx_logs;
+            results = [];
+            for (i = j = 0, len = ref.length; j < len; i = ++j) {
+              nginx_log = ref[i];
+              results.push($("#modal-nginx-logs-body").append("" + nginx_log.log));
+            }
+            return results;
+          }
+        });
+      }
+    },
+    axis: {
+      x: {
+        type: 'timeseries',
+        localtime: true,
+        tick: {
+          count: 8,
+          format: '<%== @show_datetime_format %>'
+        }
+      }
+    },
+    subchart: {
+      show: true
+    },
+    zoom: {
+      enabled: true,
+      extent: [1, 100]
+    },
+    legend: {
+      hide: 'Nginx'
+    }
+  });
+
+  $(".sidebar-toggle").click(function () {
+    resize_chart()
+  })
+
+  async function resize_chart() {
+    $('#nginx-chart').css({"opacity": 0})
+    await sleep(400);
+    chart.resize();
+    $('#nginx-chart').css({"opacity": 1})
+  }
+
+<% end %>

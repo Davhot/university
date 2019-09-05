@@ -1,0 +1,22 @@
+- for one_type_network in @name_networks do
+  %table.table.hidden{id: "network-table-orig-#{one_type_network[0]}"}
+    %tr
+      %td= t("metrics.date")
+      - if one_type_network[1]
+        - for network in one_type_network[1] do
+          %td= l network[0], format: :date
+    %tr.show_time
+      %td= t("metrics.time")
+      - if one_type_network[1]
+        - for network in one_type_network[1] do
+          %td= l network[0], format: :time
+    %tr
+      %td= t("metrics.bytes_in")
+      - if one_type_network[1]
+        - for network in one_type_network[1] do
+          %td= number_to_human_size(network[1] * 2 ** 10)
+    %tr
+      %td= t("metrics.bytes_out")
+      - if one_type_network[1]
+        - for network in one_type_network[1] do
+          %td= number_to_human_size(network[1] * 2 ** 10)

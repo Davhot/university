@@ -1,0 +1,152 @@
+html
+  height: 100%
+
+body
+  background-color: $body-color
+  width: 100%
+  font-family: "Montserrat", sans-serif !important
+  @include media-breakpoint-down(sm)
+    font-size: 1em
+
+.link-no-style
+  color: black
+  &:hover
+    color: black
+    text-decoration: none
+    cursor: default
+  &:focus
+    text-decoration: none
+
+hr
+  width: 100%
+  margin: 0
+  padding: 0
+  border-top: 1px solid black
+
+.badge-error
+  background-color: $error-color
+  color: white
+
+.badge-success
+  background-color: $success-color
+
+.px25
+  width: 25px
+
+.link
+  // margin-left: 1em
+  // padding: 0.5em
+  color: #333
+  &:hover
+    text-decoration: none
+    background-color: #ccc
+  &:focus
+    text-decoration: none
+
+.page-header
+  padding-top: 0
+  margin-top: 0
+
+.growl-msg
+  display: none
+
+.alert-block
+  position: absolute
+  right: 0
+  top: 70px
+  z-index: 5
+  margin-right: 30px
+  opacity: .8
+
+.alert-label
+  @extend .alert
+  padding: 5px 15px 5px 15px
+  margin-bottom: 15px
+  font-size: 85%
+  font-family: Intro
+  width: 100px
+  text-align: center
+  border-radius: 7px
+  $x_sizes: (150 200 300 400 500 600)
+  @each $x_size in $x_sizes
+    &.x#{$x_size}
+      width: #{$x_size}px
+.breadcrumb
+  a
+    @extend .link
+
+.pagination-block
+  width: 100%
+  text-align: center
+.pagination > li:first-child
+  & > span, & > a
+    border-bottom-left-radius: 1em
+    border-top-left-radius: 1em
+.pagination > li:last-child
+  & > span, & > a
+    border-bottom-right-radius: 1em
+    border-top-right-radius: 1em
+
+
+#menu
+  display: none
+h3.label
+  font-size: 10px
+#layout
+  padding-left: 0 !important
+.flex-items
+  display: flex
+  flex-wrap: wrap
+  justify-content: space-between
+  p
+    display: inline
+[type="radio"]:checked,
+[type="radio"]:not(:checked)
+  position: absolute
+  left: -9999px
+[type="radio"]:checked + label,
+[type="radio"]:not(:checked) + label
+  position: relative
+  padding-left: 28px
+  cursor: pointer
+  line-height: 20px
+  display: inline-block
+  color: #666
+[type="radio"]:checked + label:before,
+[type="radio"]:not(:checked) + label:before
+  content: ''
+  position: absolute
+  left: 0
+  top: 0
+  width: 18px
+  height: 18px
+  border: 1px solid #ddd
+  border-radius: 100%
+  background: #fff
+[type="radio"]:checked + label:after,
+[type="radio"]:not(:checked) + label:after
+  content: ''
+  width: 12px
+  height: 12px
+  background: #333333
+  position: absolute
+  top: 3px
+  left: 3px
+  border-radius: 100%
+  -webkit-transition: all 0.2s ease
+  transition: all 0.2s ease
+[type="radio"]:not(:checked) + label:after
+  opacity: 0
+  -webkit-transform: scale(0)
+  transform: scale(0)
+[type="radio"]:checked + label:after
+  opacity: 1
+  -webkit-transform: scale(1)
+  transform: scale(1)
+
+form button
+  margin: 1em !important
+  margin-left: 0.2em !important
+
+.hidden
+  display: none

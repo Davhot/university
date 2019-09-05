@@ -1,0 +1,28 @@
+%table.hidden#metrics-orig
+  %tr
+    %td= t("metrics.date")
+    - for metric in @metrics do
+      - if @step_metric == "month"
+        %td= l metric[0], format: :month
+      - else
+        %td= l metric[0], format: :date
+  %tr.show_time
+    %td= t("metrics.time")
+    - for metric in @metrics do
+      %td= l metric[0], format: :time
+  %tr.show_processor
+    %td= t("metrics.cpu_average")
+    - for metric in @metrics do
+      %td= SystemMetric.cpu_average_in_percent(metric[1])
+  %tr.show_memory
+    %td= t("metrics.memory_used") + " (доступно #{number_to_human_size(@main_metric.memory_size * 2 ** 20)})"
+    - for metric in @metrics do
+      %td= number_to_human_size(metric[2] * 2 ** 20)
+  %tr.show_swap
+    %td= t("metrics.swap_used") + " (доступно #{number_to_human_size(@main_metric.swap_size * 2 ** 20)})"
+    - for metric in @metrics do
+      %td= number_to_human_size(metric[3] * 2 ** 20)
+  %tr.show_descriptors
+    %td= t("metrics.descriptors_used") + " (максимум #{@main_metric.descriptors_max})"
+    - for metric in @metrics do
+      %td= metric[4]

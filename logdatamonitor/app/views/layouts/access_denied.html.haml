@@ -1,0 +1,13 @@
+%h1
+  Доступ запрещён!
+
+.alert.alert-danger
+  Пользователю 
+  = @current_user.nil? ? 'не авторизован' : @current_user.email
+  к действию
+  = action_name
+  контроллера
+  = controller_name
+  доступ запрещён!  
+
+= link_to 'Назад', login_path

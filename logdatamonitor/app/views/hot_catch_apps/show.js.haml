@@ -1,0 +1,12 @@
+:plain
+  $("#app-errors").html("#{escape_javascript(render :partial => 'app_errors')}")
+
+  // возможность раскрывать текст ошибки
+  $("table[data-toggle-error]").click(function() {
+    id = $(this).data("toggle-error")
+    $(id).toggle(300)
+  })
+
+  // смена нажатой кнопки на фильтрах
+  $(".filter-container .active-filter-button").toggleClass("filter-button").toggleClass("active-filter-button")
+  $("##{@filter}").toggleClass("filter-button").toggleClass("active-filter-button")

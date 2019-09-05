@@ -1,0 +1,36 @@
+= form_for @user do |f|
+  = error_messages_for @user
+
+  .sign_in_up_block
+    .row
+
+      .page-header
+        %h1 Регистрация
+      .col-md-12
+        .form-group
+          .input-group.input-group-md
+            %span.input-group-addon
+              %i.fa.fa-user.px25
+            = f.text_field :email, class: 'form-control', placeholder: User.human_attribute_name(:email)
+          = f.error_messages_for(:email)
+    .row
+      .col-md-12
+        .form-group
+          .input-group.input-group-md
+            %span.input-group-addon
+              %i.fa.fa-key.px25
+            = f.password_field :password, class: 'form-control', placeholder: User.human_attribute_name(:password)
+          = f.error_messages_for(:password)
+    .row
+      .col-md-12
+        .form-group
+          .input-group.input-group-md
+            %span.input-group-addon
+              %i.fa.fa-key.px25
+            = f.password_field :password_confirmation, class: 'form-control', placeholder: User.human_attribute_name(:password_confirmation)
+          = f.error_messages_for(:password_confirmation)
+    .row
+      .form-actions
+        .col-md-12
+          = f.submit "Регистрация", class: 'btn btn-primary'
+          = link_to "Войти", login_path, class: 'btn link'

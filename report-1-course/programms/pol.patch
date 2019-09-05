@@ -1,0 +1,49 @@
+7a7
+>   def n_points;    0 end
+24a25,27
+>   def n_points
+>     (@p.x**2 + @p.y ** 2)**(0.5) <= 1 ? 1 : 0
+>   end
+35c38,41
+<   def add(r)
+---
+>   def n_points
+>     R2Point.intersect(@p, @q)
+>   end
+>   def add(r)
+47c53
+<   attr_reader :points, :perimeter, :area
+---
+>   attr_reader :points, :perimeter, :area, :n_points
+60a67,72
+>     @n_infinity = 0 #сколько раз отрезки, пересекающие круг дают в ответе "infinity"
+>     @n_point = 0 #в скольких точках пересекаются все отрезки, исключая "infinity"
+>     @n_points = 0 #множество точек пересечения с кругом
+>     oper_with_n_p(a, b)
+>     oper_with_n_p(c, b)
+>     oper_with_n_p(a, c)
+78c89
+<
+---
+>       oper_with_n_p(@points.last, @points.first, "del")
+95a95
+>         oper_with_n_p(p, @points.first, "del")
+92c104,105
+< 	@area      += R2Point.area(t, p, @points.last).abs
+---
+> 	      @area += R2Point.area(t, p, @points.last).abs
+>         oper_with_n_p(p, @points.last, "del")
+98a112,113
+>       oper_with_n_p(t, @points.first)
+>       oper_with_n_p(t, @points.last)
+102a117,126
+>   private
+>   def oper_with_n_p(a, b, op = "add")
+>     case R2Point.intersect(a, b)
+>     when 1
+>       op == "add" ? @n_point += 1 : @n_point -= 1
+>     when "infinity"
+>       op == "add" ? @n_infinity += 1 : @n_infinity -= 1
+>     end
+>     @n_points = (@n_infinity > 0 ? "infinity" : @n_point)
+>   end

@@ -1,0 +1,35 @@
+$("#main_system_metrics").html("<%= j render 'original_main_metric' %>")
+
+<%= render 'activate_slider' %>
+
+<% if @show_time %>
+  $(".show_time").removeClass("hidden")
+<% else %>
+  $(".show_time").addClass("hidden")
+<% end %>
+
+<% if @show_processor %>
+  $(".show_processor").removeClass("hidden")
+<% else %>
+  $(".show_processor").addClass("hidden")
+<% end %>
+
+<% if @show_memory %>
+  $(".show_memory").removeClass("hidden")
+<% else %>
+  $(".show_memory").addClass("hidden")
+<% end %>
+
+<% if @show_swap %>
+  $(".show_swap").removeClass("hidden")
+<% else %>
+  $(".show_swap").addClass("hidden")
+<% end %>
+
+<% if @show_descriptors %>
+  $(".show_descriptors").removeClass("hidden")
+<% else %>
+  $(".show_descriptors").addClass("hidden")
+<% end %>
+
+$("#show-main-metric-min-max-time").html('<%= "(#{l @min_time.in_time_zone} - #{l @max_time.in_time_zone})"%>')

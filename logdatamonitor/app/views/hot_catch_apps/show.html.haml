@@ -1,0 +1,35 @@
+-provide(:title, t('app.apps.header_show'))
+=breadcrumb_tag do
+  %li.breadcrumb-item.active= t('app.apps.header_show')
+  %li.breadcrumb-item= link_to t('app.apps.header_index'), hot_catch_apps_path
+
+.row
+  .col-md-12
+    .filter-container
+      .nginx-logs
+        %div
+          = link_to "Отобразить инфографику", show_rails_graph_hot_catch_app_path(@hot_catch_app),
+          class: "filter-button link-no-style"
+
+.row
+  .col-md-12
+    .filter-container
+      %header Фильтры
+      %div
+        = link_to "All", hot_catch_app_path(@hot_catch_app, type: "all-filter"), remote: true,
+        class: "filter-button link-no-style", id: "all-filter"
+
+        = link_to "Rails&nbsp;Server".html_safe,
+        hot_catch_app_path(@hot_catch_app, type: "rails-server-filter"), remote: true,
+        class: "filter-button link-no-style", id: "rails-server-filter"
+
+        = link_to "Rails&nbsp;Client".html_safe,
+        hot_catch_app_path(@hot_catch_app, type: "rails-client-filter"), remote: true,
+        class: "filter-button link-no-style", id: "rails-client-filter"
+
+.row
+  .col-md-12
+    .filter-container#app-errors
+      = render "app_errors"
+
+  .pagination-block= will_paginate @logs, renderer: BootstrapPagination::Rails

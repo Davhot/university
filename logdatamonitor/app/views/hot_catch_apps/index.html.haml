@@ -1,0 +1,37 @@
+-provide(:title, t('app.apps.header_index'))
+
+- if @hot_catch_apps.count == 0
+  .row
+    .col-md-12
+      %p.alert.alert-info Приложений не найдено.
+- else
+  =breadcrumb_tag do
+    %li.breadcrumb-item.active= t('app.apps.header_index')
+  .row
+    %table.table#apps-table
+      %thead
+        %tr
+          %th №
+          %th Приложение
+          %th
+            %span.badge Ошибки
+      %tbody
+        - @hot_catch_apps.each_with_index do |app, index|
+          %tr.app
+            %td= index + 1
+            %td= app.name
+            %td
+              - if (errors = app.count_errors) > 0
+                %span.badge.badge-error= errors
+              - else
+                %span.badge.badge-success= errors
+          %tr.nodisplay.app-info-tr{"data-link": "#{hot_catch_app_path(app)}"}
+            %td{colspan: 3} Журнал Ruby on Rails
+          %tr.nodisplay.app-info-tr{"data-link": "#{show_nginx_statistic_hot_catch_app_path(app)}"}
+            %td{colspan: 3} Статистика Nginx
+          %tr.nodisplay.app-info-tr{"data-link": "#{show_server_statistic_hot_catch_app_path(app)}"}
+            %td{colspan: 3} Нагрузка на систему
+          %tr.nodisplay.app-info-tr{"data-link": "#{show_all_graphs_hot_catch_app_path(app)}"}
+            %td{colspan: 3} Интегральный график
+
+    .pagination-block= will_paginate @hot_catch_apps, renderer: BootstrapPagination::Rails

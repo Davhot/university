@@ -1,0 +1,2 @@
+- flash.each do |key,val|
+  .growl-msg{data: {type: key.to_s=='notice' ? 'success' : key}}=val

@@ -1,0 +1,27 @@
+\begin{thebibliography}{}
+
+\bibitem{compf}
+\link{http://edu1.msiu.ru/f/7275-material\_ici\_toc.zip/index.html}~---
+Описание проекта «Стековый копилятор формул».
+
+\bibitem{convex}
+\link{http://edu1.msiu.ru/f/7561-material\_ici\_toc.zip/index.html},
+\link{http://edu1.msiu.ru/f/7591-material\_ici\_toc.zip/index.html}~---
+Описание проекта «Выпуклая оболочка».
+
+\bibitem{ruby}
+\link{http://ru.wikipedia.org/wiki/Ruby}~---
+Википедия (свободная энциклопедия) о языке Ruby.
+
+\bibitem{rlatex}
+С.М. Львовский.
+{\em Набор и вёрстка в системе \LaTeX, 3-е изд., испр. и доп.}~---
+М., МЦНМО, 2003. Доступны исходные тексты этой книги.
+
+\bibitem{texbook}
+D.~E.~Knuth. {\em The \TeX{}book.}~---
+Addison-Wesley, 1984. Русский перевод:
+Дональд~Е.~Кнут.
+{\em Все про \TeX.}~--- Протвино, РД\TeX, 1993.
+
+\end{thebibliography}

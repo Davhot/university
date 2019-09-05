@@ -1,0 +1,109 @@
+-provide(:title, t('app.apps.server.headers.graphic'))
+=breadcrumb_tag do
+  %li.breadcrumb-item.active= t('app.apps.server.headers.graphic')
+  %li.breadcrumb-item= link_to t('app.apps.server.headers.index'), show_server_statistic_hot_catch_app_path(@hot_catch_app)
+  %li.breadcrumb-item= link_to t('app.apps.header_index'), hot_catch_apps_path
+
+.row
+  .col-md-12
+    .filter-container
+      .nginx-logs
+        %h1 Интерфейсы
+        %hr.hr5
+        = form_tag load_network_graph_hot_catch_app_url(@hot_catch_app),
+          id: "network_load_graph_form", method: :get do
+          .row
+            .col-md-12
+              %fieldset
+                %legend.header= I18n.t("legend", scope: "nginx_graph_form.step")
+                .flex-items
+                  - for type in ["year", "month", "day", "hour", "minute"] do
+                    %p
+                      = radio_button_tag :network_metric_form_step, type, (type == "day")
+                      = label_tag ("network_metric_form_step_" + type), I18n.t(type, scope: "nginx_graph_form.step")
+          .row
+            .col-md-12
+              %fieldset
+                %legend.header
+                  = I18n.t("legend", scope: "nginx_graph_form.interval")
+                  #limit-date
+              .form-row.align-items-center
+                .col-md-6
+                  .form-group.row
+                    .input-group.date.nginx-form-filter-field
+                      %label.col-sm-1.col-form-label{for: "network_metric_graph_form_from"}= t("from", scope: "nginx_graph_form.interval")
+                      .col-sm-11
+                        .input-group.mb-2
+                          .input-group-prepend
+                            .input-group-text
+                              %i.fa.fa-calendar
+                          = text_field_tag :network_metric_graph_form_from, nil, class: 'form-control datetimepicker'
+                .col-md-6
+                  .form-group.row
+                    .input-group.date.nginx-form-filter-field
+                      %label.col-sm-1.col-form-label{for: "network_metric_graph_form_to"}= t("to", scope: "nginx_graph_form.interval")
+                      .col-sm-11
+                        .input-group.mb-2
+                          .input-group-prepend
+                            .input-group-text
+                              %i.fa.fa-calendar
+                          = text_field_tag :network_metric_graph_form_to, nil, class: 'form-control datetimepicker'
+          .row
+            .col-md-12.text-right
+              %button.btn.btn-info#reset-network-metric-graph-form Сбросить
+              %button.btn.btn-primary Отобразить
+
+        #server-chart
+          = render 'spinner'
+
+.row
+  .col-md-12
+    .filter-container
+      .nginx-logs
+        %h1 Нагрузка на систему (средние значения)
+        %hr.hr5
+        = form_tag load_main_metric_graph_hot_catch_app_url(@hot_catch_app),
+          id: "main_metric_load_graph_form", method: :get do
+          .row
+            .col-md-12
+              %fieldset
+                %legend.header= I18n.t("legend", scope: "nginx_graph_form.step")
+                .flex-items
+                  - for type in ["year", "month", "day", "hour", "minute"] do
+                    %p
+                      = radio_button_tag :main_metric_form_step, type, (type == "day")
+                      = label_tag ("main_metric_form_step_" + type), I18n.t(type, scope: "nginx_graph_form.step")
+          .row
+            .col-md-12
+              %fieldset
+                %legend.header
+                  = I18n.t("legend", scope: "nginx_graph_form.interval")
+                  #limit-date-main-metric
+              .form-row.align-items-center
+                .col-md-6
+                  .form-group.row
+                    .input-group.date.nginx-form-filter-field
+                      %label.col-sm-1.col-form-label{for: "main_metric_graph_form_from"}= t("from", scope: "nginx_graph_form.interval")
+                      .col-sm-11
+                        .input-group.mb-2
+                          .input-group-prepend
+                            .input-group-text
+                              %i.fa.fa-calendar
+                          = text_field_tag :main_metric_graph_form_from, nil, class: 'form-control datetimepicker'
+                .col-md-6
+                  .form-group.row
+                    .input-group.date.nginx-form-filter-field
+                      %label.col-sm-1.col-form-label{for: "main_metric_graph_form_to"}= t("to", scope: "nginx_graph_form.interval")
+                      .col-sm-11
+                        .input-group.mb-2
+                          .input-group-prepend
+                            .input-group-text
+                              %i.fa.fa-calendar
+                          = text_field_tag :main_metric_graph_form_to, nil, class: 'form-control datetimepicker'
+          .row
+            .col-md-12.text-right
+              %button.btn.btn-info#reset-main_metric-metric-graph-form Сбросить
+              %button.btn.btn-primary Отобразить
+
+        #main-metric-chart
+          = render 'spinner'

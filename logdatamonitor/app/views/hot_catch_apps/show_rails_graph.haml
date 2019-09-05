@@ -1,0 +1,28 @@
+-provide(:title, t('app.apps.nginx.headers.graphic'))
+=breadcrumb_tag do
+  %li.breadcrumb-item.active= t('app.apps.header_graph')
+  %li.breadcrumb-item= link_to t('app.apps.header_show'), hot_catch_app_path(@hot_catch_app)
+  %li.breadcrumb-item= link_to t('app.apps.header_index'), hot_catch_apps_path
+
+.row
+  .filter-container
+    .nginx-logs
+      %h1 Ошибки Ruby on Rails (все статусы, кроме SUCCESS)
+      %hr.hr-5
+
+      = form_tag load_rails_graph_hot_catch_app_url(@hot_catch_app), id: "rails_load_graph_form" do
+        .row
+          .col-md-12
+            %fieldset
+              %legend.header= I18n.t("legend", scope: "nginx_graph_form.step")
+              .flex-items
+                - for type in ["year", "month", "day", "hour", "minute"] do
+                  %p
+                    = radio_button_tag :rails_graph_form_step, type, (type == "hour")
+                    = label_tag ("rails_graph_form_step_" + type), I18n.t(type, scope: "nginx_graph_form.step")
+        .row
+          .col-md-12.text-right
+            %button.btn.btn-info#reset-rails-graph-form Сбросить
+            %button.btn.btn-primary Отобразить
+      #rails-chart
+        = render 'spinner'

@@ -1,0 +1,13 @@
+= form_for @hot_catch_app do |f|
+  - if @hot_catch_app.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@hot_catch_app.errors.count, "error")} prohibited this hot_catch_app from being saved:"
+      %ul
+        - @hot_catch_app.errors.full_messages.each do |message|
+          %li= message
+
+  .field
+    = f.label :name
+    = f.text_field :name
+  .actions
+    = f.submit 'Save'

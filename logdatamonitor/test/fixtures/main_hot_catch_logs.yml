@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  log_data: MyText
+  count_log: 1
+  id_log_origin_app: 1
+  name_app: MyString
+  from_log: MyString
+
+two:
+  log_data: MyText
+  count_log: 1
+  id_log_origin_app: 1
+  name_app: MyString
+  from_log: MyString

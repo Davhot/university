@@ -1,0 +1,27 @@
+\section{Приложение}
+\subsection{Изменения, внесённые в эталонный проект «Выпуклая оболочка»}
+Изменения в файле \verb|convex.rb|
+\begin{tiny}
+\verbatiminput{programms/pol.patch}
+\end{tiny}
+
+Изменения в файле \verb|r2point.rb|
+\begin{tiny}
+\verbatiminput{programms/r2.patch}
+\end{tiny}
+
+Изменения в файле \verb|tk_drawer.rb|
+\begin{tiny}
+\verbatiminput{programms/draw.patch}
+\end{tiny}
+
+Изменения в файле \verb|run_tkconvex.rb|
+\begin{tiny}
+\verbatiminput{programms/run.patch}
+\end{tiny}
+
+
+Изменения в файле \verb|convex_spec.rb|
+\begin{tiny}
+\verbatiminput{programms/convex_spec.patch}
+\end{tiny}

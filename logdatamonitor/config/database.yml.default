@@ -1,0 +1,34 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 10
+  timeout: 5000
+  port: <%= ENV['DB_PORT'] %>
+  database: <%= ENV['DB_DATABASE'] %>
+  username: <%= ENV['DB_USERNAME'] %>
+  password: <%= ENV['DB_PASSWORD'] %>
+  min_messages: warning
+  prepared_statements: false
+  variables:
+    statement_timeout: 5000
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default
+
+dev:
+  <<: *default
+
+demo:
+  <<: *default
+
+azarubin:
+  <<: *default
+
+production_cit:
+  <<: *default

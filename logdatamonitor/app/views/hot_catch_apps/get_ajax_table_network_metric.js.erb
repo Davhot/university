@@ -1,0 +1,5 @@
+$("#main_network_metrics").html("<%= j render 'original_network_metric' %>")
+
+<%= render 'activate_slider' %>
+
+$("#show-network-metric-min-max-time").html('<%= "(#{l @min_date.in_time_zone} - #{l @max_date.in_time_zone})"%>')

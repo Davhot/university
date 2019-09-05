@@ -1,0 +1,94 @@
+-provide(:title, t('app.apps.nginx.headers.graphic'))
+=breadcrumb_tag do
+  %li.breadcrumb-item.active= t('app.apps.nginx.headers.graphic')
+  %li.breadcrumb-item= link_to t('app.apps.nginx.headers.index'), show_nginx_statistic_hot_catch_app_path(@hot_catch_app)
+  %li.breadcrumb-item= link_to t('app.apps.header_index'), hot_catch_apps_path
+
+.row
+  .col-md-12
+    .filter-container
+      .nginx-logs
+        = form_tag load_nginx_graph_hot_catch_app_url(@hot_catch_app), class: "nginx-form-filter" do
+          .row
+            .col-md-12
+              %fieldset
+                %legend.header= I18n.t("legend", scope: "nginx_graph_form.step")
+                .flex-items
+                  - for type in ["year", "month", "day", "hour", "minute"] do
+                    %p
+                      = radio_button_tag :nginx_graph_form_step, type, (type == "hour"), class: 'nginx-form-filter-field'
+                      = label_tag ("nginx_graph_form_step_" + type), I18n.t(type, scope: "nginx_graph_form.step")
+        .row
+          .col-md-12
+            %fieldset
+              %legend.header
+                = I18n.t("legend", scope: "nginx_graph_form.interval")
+                #limit-date
+            .form-row.align-items-center
+              .col-md-6
+                .form-group.row
+                  .input-group.date.nginx-form-filter-field
+                    %label.col-sm-1.col-form-label{for: "nginx_graph_form_from"}= t("from", scope: "nginx_graph_form.interval")
+                    .col-sm-11
+                      .input-group.mb-2
+                        .input-group-prepend
+                          .input-group-text
+                            %i.fa.fa-calendar
+                        = text_field_tag :nginx_graph_form_from, nil, {class: 'form-control datetimepicker', type: "text"}
+              .col-md-6
+                .form-group.row
+                  .input-group.date.nginx-form-filter-field
+                    %label.col-sm-1.col-form-label{for: "nginx_graph_form_to"}= t("to", scope: "nginx_graph_form.interval")
+                    .col-sm-11
+                      .input-group.mb-2
+                        .input-group-prepend
+                          .input-group-text
+                            %i.fa.fa-calendar
+                        = text_field_tag :nginx_graph_form_to, nil, {class: 'form-control datetimepicker', type: "text"}
+        .row
+          .col-md-12
+            %fieldset
+              %legend.header
+                = I18n.t("legend", scope: "nginx_graph_form.type")
+                #limit-date
+              .col-md-12
+                .form-group
+                  .col-md-12
+                    %p
+                      = radio_button_tag :nginx_graph_form_type, "all", true, class: 'nginx-form-filter-field'
+                      = label_tag ("nginx_graph_form_type_all"), I18n.t("all", scope: "nginx_graph_form.type")
+              .col-md-12
+                .form-inline
+                  .form-group
+                    .col-md-12
+                      %p
+                        = select_tag :nginx_graph_form_ip, nil, class: 'form-control nginx-form-filter-field'
+                        = radio_button_tag :nginx_graph_form_type, "ip", false, class: 'nginx-form-filter-field'
+                        = label_tag ("nginx_graph_form_type_ip"), I18n.t("ip", scope: "nginx_graph_form.type")
+              .col-md-12
+                .form-inline
+                  .form-group
+                    .col-md-12
+                      %p
+                        = select_tag :nginx_graph_form_visitor, nil, class: 'form-control nginx-form-filter-field'
+                        = radio_button_tag :nginx_graph_form_type, "visitor", false, class: 'nginx-form-filter-field'
+                        = label_tag ("nginx_graph_form_type_visitor"), I18n.t("visitor", scope: "nginx_graph_form.type")
+
+      .text-right= link_to "сбросить фильтры", "", class: "btn btn-primary"
+
+      #spinner{"data-spinner": "#{render 'spinner'}"}
+      #nginx-chart
+        = render 'spinner'
+
+.modal.fade.bs-example-modal-lg#modal-nginx-logs{tabindex: "-1", role: "dialog", "aria-labelledby": "myLargeModalLabel"}
+  .modal-dialog.modal-lg{role: "document"}
+    .modal-content
+      .modal-header
+        %button.close{type: "button", "data-dismiss": "modal", "aria-label": "Close"}
+          %span{"aria-hidden": "true"} &times;
+        %h4.modal-title Данные Nginx
+      .modal-body
+        %pre#modal-nginx-logs-body
+          = render 'spinner'
+      .modal-footer
+        %button.btn.btn-default{type: "button", "data-dismiss": "modal"} Закрыть

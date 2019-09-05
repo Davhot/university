@@ -1,0 +1,217 @@
+-provide(:title, t('app.apps.server.headers.index'))
+=breadcrumb_tag do
+  %li.breadcrumb-item.active= t('app.apps.server.headers.index')
+  %li.breadcrumb-item= link_to t('app.apps.header_index'), hot_catch_apps_path
+
+.row
+  .col-md-12
+    .filter-container
+      .nginx-logs
+        %div
+          = link_to "Отобразить инфографику", show_server_graph_hot_catch_app_path(@hot_catch_app),
+          class: "filter-button link-no-style"
+
+#main_system_metrics
+#main_network_metrics
+
+.row
+  .col-md-12
+    .filter-container
+      .nginx-logs
+        .row
+          .col-md-12
+            %h1= "Нагрузка на систему приложения #{@hot_catch_app.name}"
+            %hr.hr5
+        .row
+          .col-md-12
+            .nginx-block
+              .nginx-header Диски
+              %table.table
+                %tr
+                  %td= t("metrics.name_disk")
+                  - for disk in @disks do
+                    %td= disk.name
+                %tr
+                  %td= t("metrics.filesystem")
+                  - for disk in @disks do
+                    %td= disk.filesystem
+                %tr
+                  %td= t("metrics.disk_size")
+                  - for disk in @disks do
+                    %td= number_to_human_size(disk.size * 2 ** 20)
+                %tr
+                  %td= t("metrics.disk_used")
+                  - for disk in @disks do
+                    %td= number_to_human_size(disk.used * 2 ** 20)
+                %tr
+                  %td= t("metrics.mounted_on")
+                  - for disk in @disks do
+                    %td= disk.mounted_on
+
+      .row
+        .col-md-12
+          .nginx-block
+            .nginx-header Нагрузка на систему (средние значения)
+
+            = form_tag(get_ajax_table_main_metric_hot_catch_app_url(@hot_catch_app),
+              method: 'get', remote: true, id: "get_ajax_table_main_metric") do
+              .row
+                .col-md-12
+                  %fieldset
+                    %legend.header= I18n.t("legend", scope: "main_metric_table_form.step")
+                    .flex-items
+                      - for type in ["month", "day", "hour", "minute"] do
+                        %p
+                          = radio_button_tag :main_metric_form_step, type, (type == "day")
+                          = label_tag ("main_metric_form_step_" + type), I18n.t(type, scope: "nginx_graph_form.step")
+              .row
+                .col-md-12
+                  %fieldset
+                    %legend.header= I18n.t("legend", scope: "main_metric_table_form.row")
+                    .flex-items
+                      - for type in ["processor", "memory", "swap", "descriptors"] do
+                        .pretty.p-round.p-icon
+                          = check_box_tag "main_metric_form_row_#{type}", type, true
+                          .state
+                            = fa_icon "check", class: "icon mdi mdi-check"
+                            = label_tag ("main_metric_form_row_" + type), I18n.t(type, scope: "main_metric_table_form.row")
+                    %br
+              .row
+                .col-md-12
+                  %fieldset
+                    %legend.header
+                      = I18n.t("legend", scope: "nginx_graph_form.interval")
+                      #show-main-metric-min-max-time
+                    .col-md-6
+                  .form-row.align-items-center
+                    .col-md-6
+                      .form-group.row
+                        .input-group.date.nginx-form-filter-field
+                          %label.col-sm-1.col-form-label{for: "main_metric_table_form_from"}= t("from", scope: "nginx_graph_form.interval")
+                          .col-sm-11
+                            .input-group.mb-2
+                              .input-group-prepend
+                                .input-group-text
+                                  %i.fa.fa-calendar
+                              = text_field_tag :main_metric_table_form_from, nil, class: 'form-control datetimepicker'
+                    .col-md-6
+                      .form-group.row
+                        .input-group.date.nginx-form-filter-field
+                          %label.col-sm-1.col-form-label{for: "main_metric_table_form_to"}= t("to", scope: "nginx_graph_form.interval")
+                          .col-sm-11
+                            .input-group.mb-2
+                              .input-group-prepend
+                                .input-group-text
+                                  %i.fa.fa-calendar
+                              = text_field_tag :main_metric_table_form_to, nil, class: 'form-control datetimepicker'
+              .row
+                .col-md-12.text-right
+                  %button.btn.btn-info#reset-main-metric-table-form Сбросить
+                  %button.btn.btn-primary Отобразить
+
+            %table.table#metrics-show
+              %tr
+                %td= render 'spinner'
+                - @rows_main_metric.times do
+                  %td
+              %tr.show_time
+                %td= render 'spinner'
+                - @rows_main_metric.times do
+                  %td
+              %tr.show_processor
+                %td= render 'spinner'
+                - @rows_main_metric.times do
+                  %td
+              %tr.show_memory
+                %td= render 'spinner'
+                - @rows_main_metric.times do
+                  %td
+              %tr.show_swap
+                %td= render 'spinner'
+                - @rows_main_metric.times do
+                  %td
+              %tr.show_descriptors
+                %td= render 'spinner'
+                - @rows_main_metric.times do
+                  %td
+            %p
+              %label Столбцы:
+              %input{type: "text", class:"amount", readonly:true, style:"border:0; color:#f6931f; font-weight:bold;"}
+            .slider{data: {"orig-table": "#metrics-orig", "show-table": "#metrics-show",
+              "start-n-elements": "#{@rows_main_metric}"}}
+            #slider-script-metrics-show
+            %br
+      %br
+      .row
+        .col-md-12
+          .nginx-block
+
+            = form_tag(get_ajax_table_network_metric_hot_catch_app_url(@hot_catch_app),
+              method: 'get', remote: true, id: "get_ajax_table_network_metric") do
+              .row
+                .col-md-12
+                  %fieldset
+                    %legend.header= I18n.t("legend", scope: "main_metric_table_form.step")
+                    .flex-items
+                      - for type in ["month", "day", "hour", "minute"] do
+                        %p
+                          = radio_button_tag :network_metric_form_step, type, (type == "day")
+                          = label_tag ("network_metric_form_step_" + type), I18n.t(type, scope: "nginx_graph_form.step")
+              .row
+                .col-md-12
+                  %fieldset
+                    %legend.header
+                      = I18n.t("legend", scope: "nginx_graph_form.interval")
+                      #show-network-metric-min-max-time
+                  .form-row.align-items-center
+                    .col-md-6
+                      .form-group.row
+                        .input-group.date.nginx-form-filter-field
+                          %label.col-sm-1.col-form-label{for: "network_metric_table_form_from"}= t("from", scope: "nginx_graph_form.interval")
+                          .col-sm-11
+                            .input-group.mb-2
+                              .input-group-prepend
+                                .input-group-text
+                                  %i.fa.fa-calendar
+                              = text_field_tag :network_metric_table_form_from, nil, class: 'form-control datetimepicker'
+                    .col-md-6
+                      .form-group.row
+                        .input-group.date.nginx-form-filter-field
+                          %label.col-sm-1.col-form-label{for: "network_metric_table_form_to"}= t("to", scope: "nginx_graph_form.interval")
+                          .col-sm-11
+                            .input-group.mb-2
+                              .input-group-prepend
+                                .input-group-text
+                                  %i.fa.fa-calendar
+                              = text_field_tag :network_metric_table_form_to, nil, class: 'form-control datetimepicker'
+              .row
+                .col-md-12.text-right
+                  %button.btn.btn-info#reset-network-metric-table-form Сбросить
+                  %button.btn.btn-primary Отобразить
+
+            - for name_network in @network_names do
+              .nginx-header= t("metrics.name_network") + ": " + name_network
+              %table.table{id: "network-table-show-#{name_network}"}
+                %tr
+                  %td= render 'spinner'
+                  - @rows_network_metric.times do
+                    %td
+                %tr.show_time
+                  %td= render 'spinner'
+                  - @rows_network_metric.times do
+                    %td
+                %tr
+                  %td= render 'spinner'
+                  - @rows_network_metric.times do
+                    %td
+                %tr
+                  %td= render 'spinner'
+                  - @rows_network_metric.times do
+                    %td
+              %p
+                %label Столбцы:
+                %input{type: "text", class:"amount", readonly:true, style:"border:0; color:#f6931f; font-weight:bold;"}
+              .slider{data: {"orig-table": "#network-table-orig-#{name_network}",
+                "show-table": "#network-table-show-#{name_network}",
+                "start-n-elements": "#{@rows_network_metric}"}}
+              %br

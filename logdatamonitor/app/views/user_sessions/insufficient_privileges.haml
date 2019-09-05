@@ -1,0 +1,11 @@
+.sign_in_up_block
+  %h1 Недостаточно привилегий!
+
+  Пользователю
+  = @current_user_login
+  в роли
+  = @current_role_user.try(:role).try(:full_info)
+  недостаточно прав для доступа к методу
+  = params['bad_action_name']
+  контроллера
+  = params['bad_controller_name']

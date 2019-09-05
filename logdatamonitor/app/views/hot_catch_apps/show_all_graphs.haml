@@ -1,0 +1,56 @@
+-provide(:title, t('app.apps.all_graphics'))
+=breadcrumb_tag do
+  %li.breadcrumb-item.active= t('app.apps.all_graphics')
+  %li.breadcrumb-item= link_to t('app.apps.header_index'), hot_catch_apps_path
+
+.row
+  .col-md-12
+    .filter-container
+      .nginx-logs
+        %h1= t('app.apps.all_graphics')
+        %hr.hr5
+        = form_tag load_network_graph_hot_catch_app_url(@hot_catch_app),
+          id: "load_all_graphs_form", method: :get do
+          .row
+            .col-md-12
+              %fieldset
+                %legend.header= I18n.t("legend", scope: "nginx_graph_form.step")
+                .flex-items
+                  - for type in ["year", "month", "day", "hour", "minute"] do
+                    %p
+                      = radio_button_tag :all_graphs_step, type, (type == "day")
+                      = label_tag ("all_graphs_step_" + type), I18n.t(type, scope: "nginx_graph_form.step")
+          .row
+            .col-md-12
+              %fieldset
+                %legend.header
+                  = I18n.t("legend", scope: "nginx_graph_form.interval")
+                  #limit-date
+              .form-row.align-items-center
+                .col-md-6
+                  .form-group.row
+                    .input-group.date.nginx-form-filter-field
+                      %label.col-sm-1.col-form-label{for: "all_graphs_from"}= t("from", scope: "nginx_graph_form.interval")
+                      .col-sm-11
+                        .input-group.mb-2
+                          .input-group-prepend
+                            .input-group-text
+                              %i.fa.fa-calendar
+                          = text_field_tag :all_graphs_from, nil, {class: 'form-control datetimepicker', type: "text"}
+                .col-md-6
+                  .form-group.row
+                    .input-group.date.nginx-form-filter-field
+                      %label.col-sm-1.col-form-label{for: "all_graphs_to"}= t("to", scope: "nginx_graph_form.interval")
+                      .col-sm-11
+                        .input-group.mb-2
+                          .input-group-prepend
+                            .input-group-text
+                              %i.fa.fa-calendar
+                          = text_field_tag :all_graphs_to, nil, {class: 'form-control datetimepicker', type: "text"}
+          .row
+            .col-md-12.text-right
+              %button.btn.btn-info#reset-network-metric-graph-form Сбросить
+              %button.btn.btn-primary Отобразить
+
+        #all-charts
+          = render 'spinner'

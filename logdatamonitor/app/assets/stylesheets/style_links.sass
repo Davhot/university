@@ -1,0 +1,27 @@
+// плавное изменение ссылки кнопки при наведении
+.link
+  line-height: 1
+  display: inline-block
+  text-decoration: none
+  cursor: pointer
+
+.link:hover, .link.active
+  text-decoration: none
+  background-color: inherit !important
+
+.link:after
+  display: block
+  content: ""
+  height: 2px
+  width: 0%
+  background-color: darken(gray, 30%)
+  transition: width .3s ease-in-out
+
+.link:hover:after, .link:focus:after, .link.active:after
+  width: 100%
+
+a, button
+  transition: background-color 0.2s 0s ease
+  -moz-transition: background-color 0.2s 0s ease
+  -o-transition: background-color 0.2s 0s ease
+  -webkit-transition: background-color 0.2s 0s ease

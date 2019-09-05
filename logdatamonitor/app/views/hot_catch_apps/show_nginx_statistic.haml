@@ -1,0 +1,261 @@
+- provide(:title, t('app.apps.nginx.headers.index'))
+= breadcrumb_tag do
+  %li.breadcrumb-item.active= t('app.apps.nginx.headers.index')
+  %li.breadcrumb-item= link_to t('app.apps.header_index'), hot_catch_apps_path
+
+.row
+  .filter-container
+    .nginx-logs
+      %div
+        = link_to "Отобразить инфографику", show_nginx_graph_hot_catch_app_path(@hot_catch_app),
+        class: "filter-button link-no-style"
+.row
+  .filter-container
+    .nginx-logs
+      - if @data.present?
+        .row
+          .col-md-12
+            %h1= "Статистика Nginx приложения #{@hot_catch_app.name}"
+            %hr.hr5
+        .row
+          .col-md-12
+            .nginx-header
+              Период сбора данных Nginx:
+              = "#{l Date.parse(@data["general"]["start_date"])}"
+              &mdash;
+              = "#{l Date.parse(@data["general"]["end_date"])}"
+
+              %hr.hr5
+        .row.general-nginx
+          .col-md-3
+            .nginx-block#header-1
+              .header
+                Общее количество запросов
+              .nginx-count= @general["total_requests"]
+          .col-md-3
+            .nginx-block#header-2
+              .header
+                Количество валидных запросов
+              .nginx-count= @general["valid_requests"]
+          .col-md-3
+            .nginx-block#header-3
+              .header
+                Количество невалидных запросов
+              .nginx-count= @general["failed_requests"]
+          .col-md-3
+            .nginx-block#header-4
+              .header
+                Уникальных посетителей
+              .nginx-count= @general["unique_visitors"]
+        .row
+          .col-md-12
+            .nginx-block
+              .nginx-header
+                Статистика посещаемости по дням
+              %table.table.table-hover.table-striped
+                %tr
+                  %th &emsp;
+                  %th Запросы
+                  %th Посетители
+                  %th Пропускная способность
+                  %th Всего дней
+                %tr
+                  %th Всего
+                  %th= @visitors["metadata"]["hits"]["count"]
+                  %th= @visitors["metadata"]["visitors"]["count"]
+                  %th= number_to_human_size(@visitors["metadata"]["bytes"]["count"])
+                  %th= @visitors["metadata"]["data"]["unique"]
+                %tr
+                  %th Максимум за день
+                  %th= @visitors["metadata"]["hits"]["max"]
+                  %th= @visitors["metadata"]["visitors"]["max"]
+                  %th= number_to_human_size(@visitors["metadata"]["bytes"]["max"])
+                  %th &emsp;
+                %tr
+                  %th Минимум за день
+                  %th= @visitors["metadata"]["hits"]["min"]
+                  %th= @visitors["metadata"]["visitors"]["min"]
+                  %th= number_to_human_size(@visitors["metadata"]["bytes"]["min"])
+                  %th &emsp;
+
+              %table.table.table-hover.table-striped
+                %tr
+                  %th №
+                  %th Запросы
+                  %th Посетители
+                  %th Пропускная способность
+                  %th Дата
+                - @visitors["data"].each_with_index do |day_stat, index|
+                  %tr
+                    %td= index + 1
+                    %td= day_stat["hits"]["count"]
+                    %td= day_stat["visitors"]["count"]
+                    %td= number_to_human_size(day_stat["bytes"]["count"])
+                    %td= l Date.parse(day_stat["data"])
+        .row
+          .col-md-12
+            .nginx-block
+              .nginx-header
+                Статистика по URL - адресам
+              %table.table.table-hover.table-striped
+                %tr
+                  %th №
+                  %th Запросы
+                  %th Посетители
+                  %th Пропускная способность
+                  %th Метод
+                  %th Протокол
+                  %th Путь
+                - @requests["data"].each_with_index do |stat, index|
+                  %tr
+                    %td= index + 1
+                    %td= stat["hits"]["count"]
+                    %td= stat["visitors"]["count"]
+                    %td= number_to_human_size(stat["bytes"]["count"])
+                    %td= stat["method"]
+                    %td= stat["protocol"]
+                    %td.truncated-td= stat["data"]
+        .row
+          .col-md-12
+            .nginx-block
+              .nginx-header
+                Статистика по статическим файлам
+              %table.table.table-hover.table-striped
+                %tr
+                  %th №
+                  %th Запросы
+                  %th Посетители
+                  %th Пропускная способность
+                  %th Метод
+                  %th Протокол
+                  %th Путь
+                - @static_requests["data"].each_with_index do |stat, index|
+                  %tr
+                    %td= index + 1
+                    %td= stat["hits"]["count"]
+                    %td= stat["visitors"]["count"]
+                    %td= number_to_human_size(stat["bytes"]["count"])
+                    %td= stat["method"]
+                    %td= stat["protocol"]
+                    %td.truncated-td= stat["data"]
+
+        .row
+          .col-md-12
+            .nginx-block
+              .nginx-header
+                Статистика по IP - адресам
+              %table.table.table-hover.table-striped
+                %tr
+                  %th №
+                  %th Запросы
+                  %th Посетители
+                  %th Пропускная способность
+                  %th Страна
+                  %th IP
+                - @hosts["data"].each_with_index do |stat, index|
+                  %tr
+                    %td= index + 1
+                    %td= stat["hits"]["count"]
+                    %td= stat["visitors"]["count"]
+                    %td= number_to_human_size(stat["bytes"]["count"])
+                    %td= stat["country"]
+                    %td= stat["data"]
+        .row
+          .col-md-12
+            .nginx-block
+              .nginx-header
+                Статистика по операционным системам
+              %table.table.table-hover.table-striped
+                %tr
+                  %th №
+                  %th Запросы
+                  %th Посетители
+                  %th Пропускная способность
+                  %th Операционная система
+                - @os["data"].each_with_index do |stat, index|
+                  %tr
+                    %td= index + 1
+                    %td= stat["hits"]["count"]
+                    %td= stat["visitors"]["count"]
+                    %td= number_to_human_size(stat["bytes"]["count"])
+                    %td= stat["data"]
+        .row
+          .col-md-12
+            .nginx-block
+              .nginx-header
+                Статистика по браузерам
+              %table.table.table-hover.table-striped
+                %tr
+                  %th №
+                  %th Запросы
+                  %th Посетители
+                  %th Пропускная способность
+                  %th Браузер
+                - @browsers["data"].each_with_index do |stat, index|
+                  %tr
+                    %td= index + 1
+                    %td= stat["hits"]["count"]
+                    %td= stat["visitors"]["count"]
+                    %td= number_to_human_size(stat["bytes"]["count"])
+                    %td= stat["data"]
+
+        .row
+          .col-md-12
+            .nginx-block
+              .nginx-header
+                Распределение общего числа запросов по времени
+              %table.table.table-hover.table-striped
+                %tr
+                  %th №
+                  %th Запросы
+                  %th Посетители
+                  %th Пропускная способность
+                  %th Час
+                - @visit_time["data"].each_with_index do |stat, index|
+                  %tr
+                    %td= index + 1
+                    %td= stat["hits"]["count"]
+                    %td= stat["visitors"]["count"]
+                    %td= number_to_human_size(stat["bytes"]["count"])
+                    %td= stat["data"]
+        .row
+          .col-md-12
+            .nginx-block
+              .nginx-header
+                HTTP статусы
+              %table.table.table-hover.table-striped
+                %tr
+                  %th №
+                  %th Запросы
+                  %th Посетители
+                  %th Пропускная способность
+                  %th Статус
+                - @status_codes["data"].each_with_index do |stat, index|
+                  %tr
+                    %td= index + 1
+                    %td= stat["hits"]["count"]
+                    %td= stat["visitors"]["count"]
+                    %td= number_to_human_size(stat["bytes"]["count"])
+                    %td= stat["data"]
+        .row
+          .col-md-12
+            .nginx-block
+              .nginx-header
+                Геолокация
+              %table.table.table-hover.table-striped
+                %tr
+                  %th №
+                  %th Запросы
+                  %th Посетители
+                  %th Пропускная способность
+                  %th Страна
+                - @geolocation["data"].each_with_index do |stat, index|
+                  - stat["items"].each_with_index do |stat2, index2|
+                    %tr
+                      %td= index + index2 + 1
+                      %td= stat2["hits"]["count"]
+                      %td= stat2["visitors"]["count"]
+                      %td= number_to_human_size(stat2["bytes"]["count"])
+                      %td= stat2["data"]
+      - else
+        %p Статистики не найдено

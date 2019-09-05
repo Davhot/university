@@ -1,0 +1,2 @@
+module MainHotCatchLogsHelper
+end

@@ -1,0 +1,49 @@
+var chart_rails;
+
+<% if @error_date %>
+  alert("Неверный формат даты")
+<% elsif @requests.present? && @requests.count > 0 %>
+  chart_rails = c3.generate({
+    point: {
+      r: 5
+    },
+    bindto: '#rails-chart',
+    data: {
+      x: 'x',
+      xFormat: '<%== @parse_c3_date_format %>',
+      columns: [<%== @requests[0] %>, <%== @requests[1] %>]
+    },
+    axis: {
+      x: {
+        type: 'timeseries',
+        localtime: true,
+        tick: {
+          count: 8,
+          format: '<%== @show_datetime_format %>'
+        }
+      }
+    },
+    subchart: {
+      show: true
+    },
+    zoom: {
+      enabled: true,
+      extent: [1, 100]
+    },
+    legend: {
+      hide: 'Rails'
+    }
+  });
+
+  $(".sidebar-toggle").click(function () {
+    resize_chart()
+  })
+
+  async function resize_chart() {
+    $('#rails-chart').css({"opacity": 0})
+    await sleep(400);
+    chart_rails.resize();
+    $('#rails-chart').css({"opacity": 1})
+  }
+
+<% end %>

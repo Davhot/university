@@ -1,0 +1,66 @@
+var chart_network;
+
+<% if @error_date %>
+  alert("Неверный формат даты")
+<% elsif @x.present? %>
+  $("#network_metric_graph_form_from").val("<%= l @begin_date.localtime %>")
+  $("#network_metric_graph_form_to").val("<%= l @end_date.localtime %>")
+  $("#limit-date").text("(<%= l @min_date.localtime %> - <%= l @max_date.localtime %>)")
+
+  chart_network = c3.generate({
+    point: {
+      r: 5
+    },
+    bindto: '#server-chart',
+    data: {
+      xs: {
+        <% for x in @x do %>
+          <%== "'#{x[0]}':'#{x[1]}'," %>
+        <% end %>
+      },
+      xFormat: '<%== @parse_c3_date_format %>',
+      columns: <%== @y.inspect %>
+    },
+    tooltip: {
+      format: {
+        value: function (value, ratio, id) {
+          return humanFileSize(value);
+        }
+      }
+    },
+    axis: {
+      x: {
+        type: 'timeseries',
+        localtime: true,
+        tick: {
+          count: 8,
+          format: '<%== @show_datetime_format %>'
+        }
+      },
+      y : {
+        tick: {
+          format: function (value) { return humanFileSize(value) }
+        }
+      }
+    },
+    subchart: {
+      show: true
+    },
+    zoom: {
+      enabled: true,
+      extent: [1, 100]
+    }
+  });
+
+  $(".sidebar-toggle").click(function () {
+    resize_chart_network()
+  })
+
+  async function resize_chart_network() {
+    $('#server-chart').css({"opacity": 0})
+    await sleep(400);
+    chart_network.resize();
+    $('#server-chart').css({"opacity": 1})
+  }
+
+<% end %>

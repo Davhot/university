@@ -1,0 +1,81 @@
+29a31,34
+>   it "Количество точек пересечения нульугольника с единичной окружностью в центре координат = 0" do
+>     expect(fig.n_points).to be 0
+>   end
+>
+34a40
+>   let(:fig1) { Point.new(R2Point.new(3,3)) }
+59a66,73
+>   it "Количество точек пересечения точки (0, 0) с единичной окружностью в центре координат = 1" do
+>     expect(fig.n_points).to be 1
+>   end
+>
+>   it "Количество точек пересечения точки (3, 3) с единичной окружностью в центре координат = 0" do
+>     expect(fig1.n_points).to be 0
+>   end
+>
+99a114,129
+> describe Segment do
+>   let(:fig) { Segment.new(R2Point.new(0.0,0.0), R2Point.new(1.0,0.0)) }
+>   let(:fig1) { Segment.new(R2Point.new(2.0,0.0), R2Point.new(2.0,3.0)) }
+>   let(:fig2) { Segment.new(R2Point.new(-1.0,1.0), R2Point.new(2.0,1.0)) }
+>   context "нахождение количества точек пересечения отрезка с единичной окружностью"
+>   it "Для отрезка (0,0) (1,0) = infinity" do
+>     expect(fig.n_points).to eq "infinity"
+>   end
+>   it "Для отрезка (2,0) (2,3) = 0" do
+>     expect(fig1.n_points).to be 0
+>   end
+>   it "Для отрезка (-1,1) (2, 1) = 1" do
+>     expect(fig2.n_points).to be 1
+>   end
+>
+> end
+188a219,265
+>   describe Polygon do
+>
+>     let(:fig) do
+>       a = R2Point.new(0.0,0.0)
+>       b = R2Point.new(1.0,0.0)
+>       c = R2Point.new(0.0,1.0)
+>       fig = Polygon.new(a,b,c)
+>     end
+>     let(:fig1) do
+>       a = R2Point.new(-1.0,-1.0)
+>       b = R2Point.new(1.0,1.0)
+>       c = R2Point.new(-1.0,1.0)
+>       d = R2Point.new(1.0,-1.0)
+>       fig1 = Polygon.new(a,b,c)
+>       fig1.add(d)
+>     end
+>     let(:fig2) do
+>       a = R2Point.new(-2.0,-2.0)
+>       b = R2Point.new(2.0,2.0)
+>       c = R2Point.new(2.0,-2.0)
+>       d = R2Point.new(-2.0,2.0)
+>       fig2 = Polygon.new(a,b,c)
+>       fig2.add(d)
+>     end
+>     context "нахождение количества точек пересечения выпуклой оболочки с единичной окружностью:" do
+>
+>       it "Для точек (0,0) (1,0) (0,1) = infinity" do
+>         expect(fig.n_points).to eq "infinity"
+>       end
+>       it "Для точек (0,3) (0,-3) (1,0) = infinity" do
+>         fig.add(R2Point.new(0.0,3.0))
+>         fig.add(R2Point.new(0.0,-3.0))
+>         expect(fig.n_points).to eq "infinity"
+>       end
+>       it "Для точек (0,0) (1,0) (0,1) (1,1) (-1,-1) = infinity" do
+>         fig.add(R2Point.new(1.0,1.0))
+>         fig.add(R2Point.new(-1.0,-1.0))
+>         expect(fig.n_points).to eq "infinity"
+>       end
+>       it "Для точек (-1,-1) (1,1) (-1,1) (1,-1) = 4" do
+>         expect(fig1.n_points).to be 4
+>       end
+>       it "Для точек (2,2) (2,-2) (-2,2) (-2,-2) = 0" do
+>         expect(fig2.n_points).to be 0
+>       end
+>     end
+>   end

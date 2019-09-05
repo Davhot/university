@@ -1,0 +1,97 @@
+ru:
+  nginx_graph_form:
+    step:
+      legend: Отобразить график с шагом
+      year: Год
+      month: Месяц
+      day: День
+      hour: Час
+      minute: Минута
+    interval:
+      legend: Ограничить по времени
+      from: С
+      to: По
+    type:
+      legend: Режим просмотра
+      all: Данные по всем запросам
+      ip: Данные по выбранному IP
+      visitor: Данные по выбранному посетителю
+  main_metric_table_form:
+    step:
+      legend: Шаг
+    row:
+      legend: Параметры
+      processor: Процессор
+      memory: Оперативная память
+      swap: Файл подкачки
+      descriptors: Доступные дескрипторы
+
+  app:
+    apps:
+      all_graphics: Интегральный график
+      header_index: Приложения
+      header_show: Ошибки приложения
+      header_graph: Инфографика
+      nginx:
+        headers:
+          index: Статистика Nginx
+          graphic: Инфографика
+      server:
+        headers:
+          index: Нагрузка на систему
+          graphic: Инфографика
+
+  will_paginate:
+    previous_label: "←"
+    next_label: "→"
+
+  activerecord:
+    models:
+      user: Пользователь
+  attributes:
+    user:
+      email: Электронная почта
+      password: Пароль
+      password_confirmation: Подтверждение пароля
+  time:
+    formats:
+      default: "%d.%m.%Y %H:%M:%S"
+      month: "%m.%Y"
+      date: "%d.%m.%Y"
+      time: "%H:%M:%S"
+      to_nginx: "%Y-%m-%d %H:%M:%S"
+      datetime:
+        month: "%m.%Y"
+        day: "%D"
+        hour: "%D %H"
+        minute: "%D %H:%M"
+      show_date:
+        month: "%m.%Y"
+        day: "%d.%m.%Y"
+        hour: "%d.%m.%Y %H"
+        minute: "%d.%m.%Y %H:%M"
+      c3_date:
+        month: '%Y-%m'
+        day: "%Y-%m-%d"
+        hour: '%Y-%m-%d %H'
+        minute: '%Y-%m-%d %H:%M'
+  metrics:
+    date: Дата
+    time: Время
+    cpu_average: Средняя нагрузка на процессор
+    memory_size: Объём оперативной памяти
+    memory_used: Использование оперативной памяти
+    swap_size: Доступный размер файла подкачки
+    swap_used: Использование файла подкачки
+    descriptors_max: Максимальное количество доступных дескрипторов
+    descriptors_used: Количество открытых дескрипторов
+    name_disk: Раздел
+    filesystem: Файловая система
+    disk_size: Размер
+    disk_used: Используемый объём
+    mounted_on: Подключён к разделу
+    name_network: Интерфейс
+    bytes_in: Входящий трафик
+    bytes_out: Исходящий трафик
+    packets_in: Входящий трафик (количество пакетов)
+    packets_out: Исходящий трафик (количество пакетов)

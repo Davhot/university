@@ -1,0 +1,6 @@
+7a9
+> TkDrawer.draw_new_point
+11a14
+>     TkDrawer.draw_new_point
+12a16
+>     puts "Множество точек пересечения с замкнутым единичным кругом = #{fig.n_points}"

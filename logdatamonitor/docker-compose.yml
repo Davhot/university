@@ -1,0 +1,33 @@
+app:
+  build: .
+  command: sh docker/start.sh
+  volumes:
+    - .:/usr/src/app
+    - ./config/database.yml.default:/usr/src/app/config/database.yml
+    - ./bundle:/usr/local/bundle
+    - ./public:/usr/share/nginx/html/logdatamonitor
+    - ../../log/apps:/usr/src/app/log/apps
+    - /home/david/uploads/logdatamonitor:/usr/src/app/public/uploads
+    - tmp:/usr/src/app/tmp
+    - "/var/run/postgresql:/var/run/postgresql"
+  env_file:
+    - database.env
+  environment:
+    RAILS_ENV: "${RAILS_ENV}"
+  restart: always
+nginx:
+  image: nginx
+  links:
+    - app
+  volumes:
+    - ./config/nginx.conf:/etc/nginx/nginx.conf
+    - ./public:/usr/share/nginx/html/logdatamonitor
+
+    - /home/david/uploads/logdatamonitor:/usr/share/nginx/html/logdatamonitor/uploads
+    - "/share/logs/logdatamonitor_${RAILS_ENV}:/usr/src/app/log"
+    - /home/david/ssl_certificates/logdatamonitor:/usr/share/nginx/html/ssl_certificates/logdatamonitor
+  ports:
+    - "3002:3002"
+  expose:
+    - "3002"
+  restart: always

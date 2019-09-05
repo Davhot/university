@@ -1,0 +1,78 @@
+var chart_main_metric;
+<% if @error_date %>
+  alert("Неверный формат даты")
+<% elsif @x.present? %>
+  $("#main_metric_graph_form_from").val("<%= l @begin_date.localtime %>")
+  $("#main_metric_graph_form_to").val("<%= l @end_date.localtime %>")
+  $("#limit-date-main-metric").text("(<%= l @min_date.localtime %> - <%= l @max_date.localtime %>)")
+  chart_main_metric = c3.generate({
+    point: {
+      r: 5
+    },
+    bindto: '#main-metric-chart',
+    data: {
+      x: "x1",
+      xFormat: '<%== @parse_c3_date_format %>',
+      columns: <%== [@x, @y[0], @y[1], @y[2]].inspect %>,
+      axes: {
+        "<%== @y[1][0] %>": 'y',
+        "<%== @y[2][0] %>": 'y',
+        "<%== @y[0][0] %>": 'y2'
+      }
+    },
+    tooltip: {
+      format: {
+        value: function (value, ratio, id) {
+          if(id == '<%== @y[1][0] %>' || id == '<%== @y[2][0] %>'){
+            return humanFileSize(value);
+          } else {
+            return value + '%'
+          }
+        }
+      }
+    },
+    axis: {
+      y: {
+        tick: {
+          format: function (value) { return humanFileSize(value) }
+        }
+      },
+      y2: {
+        show: true,
+        min: 0,
+        max: 100,
+        padding: 0,
+        tick: {
+          format: function (value) { return value + '%' }
+        }
+      },
+      x: {
+        type: 'timeseries',
+        localtime: true,
+        tick: {
+          count: 8,
+          format: '<%== @show_datetime_format %>'
+        }
+      }
+    },
+    subchart: {
+      show: true
+    },
+    zoom: {
+      enabled: true,
+      extent: [1, 100]
+    }
+  });
+
+  $(".sidebar-toggle").click(function () {
+    resize_chart_main_metric()
+  })
+
+  async function resize_chart_main_metric() {
+    $('#main-metric-chart').css({"opacity": 0})
+    await sleep(400);
+    chart_main_metric.resize();
+    $('#main-metric-chart').css({"opacity": 1})
+  }
+
+<% end %>

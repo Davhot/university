@@ -1,0 +1,7 @@
+17a22,27
+>   #рисование единичной окружности
+>   def TkDrawer.draw_new_point
+>     size = SCALE
+>     x = SIZE/2
+>     TkcOval.new(CANVAS, x + size, x + size, x - size, x - size)
+>   end

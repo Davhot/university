@@ -1,0 +1,58 @@
+%header
+  Ошибки
+  = @hot_catch_app.name
+- if @logs.count == 0
+  %p.alert.alert-info Ошибок не найдено.
+- else
+  - i = 0
+  - for log in @logs do
+    - i += 1
+    .error
+      %table{class: "error-first-line", "data-toggle-error": "#er-#{i}"}
+        %tr
+          %td.n-item-error= i
+          %td
+            %span{class: "#{case_status_class(log.status)}"}= log.status
+            - if log.present?
+              = log.log_data.split("\n")[0].split(" ").map{|s| s.truncate(30, separator: /./)}.join(" ")
+            - else
+              -
+          %td
+            %span{"data-toggle": "modal", "data-target": "#log-modal-#{log.id}"}
+              - if log.status == "SUCCESS"
+                %span.badge.badge-success= log.count_log
+              - else
+                %span.badge.badge-error= log.count_log
+
+      %div{id: "er-#{i}"}
+        %hr
+        %pre.scroll_data= log.log_data.gsub("\n", "<br>").html_safe
+        %hr
+        %p
+          %b Статус:
+          = log.status
+        %hr
+        %p
+          %b Последнее обновление:
+          = log.updated_at.strftime("%F %T")
+
+- for log in @logs do
+  .modal.fade{id: "log-modal-#{log.id}"}
+    .modal-dialog
+      .modal-content
+        .modal-header
+          %button.close{type: "button", "data-dismiss": "modal", "aria-label": "Close"}
+            %span{"aria-hidden": "true"}
+              &times;
+          %h4.modal-title Активность
+        .modal-body
+          %table.table.table-striped.table-hover
+            %tr
+              %th IP
+              %th Время формирования записи
+            - for req in log.user_requests
+              %tr
+                %td= req.ip
+                %td= req.request_time.strftime("%d.%m.%Y %H:%M")
+        .modal-footer
+          %button.btn.btn-default{type: "button", "data-dismiss": "modal"} Закрыть
